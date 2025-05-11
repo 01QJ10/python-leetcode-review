@@ -1,0 +1,88 @@
+% \lesson{1}{10th May 2025}{Python Fundamentals Review}
+% ----------------------------------------------------------
+% Python review notes – stripped of algebraic‑topology material
+% ----------------------------------------------------------
+% Preamble commands such as \usepackage{amsmath}, \usepackage{listings}, etc.
+% are assumed to be in the master template.
+
+\chapter{Python Fundamentals}
+
+\section{Scope of this Appendix}
+These condensed notes cover core Python concepts and ideas of solving some LeetCode problems when 
+I was preparing for interviews.  The notes assume that you already have some degree of familiarity
+with Python and these are just meant to be a recap. They are not exhaustive and do not cover all Python features or
+LeetCode problems (of course not). Please feel free to let me know if you think certain parts need
+to be revised, or any concepts/ problems should be added!
+
+\section{Lists vs\ Tuples}
+\begin{description}
+  \item[Lists] Mutable, variable‑length: \verb|[1, 2, 3]|.  Supports in‑place modification (\verb|append|, \verb|__setitem__|, etc.).  Unhashable by design.
+  \item[Tuples] Immutable, fixed‑size: \verb|(1, 2, 3)|.  Once allocated, element pointers never change.  Therefore tuples can safely cache their \verb|__hash__| after the first call:
+\end{description}
+\begin{python}
+>>> t = (1, 2, 3)
+>>> hash(t)         # hash computed & cached
+>>> hash(t)         # O(1) field read, no recomputation
+\end{python}
+
+\subsection*{Why Immutability Helps}
+Because the tuple’s contents cannot change, the cached hash stays valid forever, allowing tuples (and frozensets) to serve as dictionary keys or set members without risk of table corruption.
+
+\subsection*{Memory Allocation: \texttt{malloc}}
+Low‑level memory for every Python object ultimately comes from the C function \verb|malloc| 
+(“memory allocate”).  CPython layers an object allocator on top (small‑object pools, arenas) 
+but still calls \verb|malloc|/\verb|realloc| for large blocks.
+
+\subsection*{Lazy Hash Caching}
+When \verb|hash()| is invoked on an immutable container for the first time, CPython computes the 
+hash and stores it in an internal slot. Subsequent calls are constant‑time field reads, which is 
+crucial for performance in hash‑table heavy workloads (e.g., counting keys in large dictionaries).
+
+\section{Dictionaries}
+\verb|dict.get(key, default)| returns the stored value if \verb|key| exists; otherwise it yields \verb|default| without raising \verb|KeyError|.
+\begin{python}
+d = {'a': 1, 'b': 2}
+print(d.get('d', 4))  # -> 4
+\end{python}
+
+\section{Object-Oriented Programming (OOP) in Python}
+\subsection{Class vs\ Instance Attributes}
+\begin{itemize}
+  \item \textbf{Class attribute}: defined directly in the class body.  Shared by all instances unless shadowed.
+  \item \textbf{Instance attribute}: stored in the object’s \verb|__dict__|; unique per instance.
+  \item Methods are class attributes that are functions; the descriptor protocol turns them into \emph{bound methods} when accessed via an instance.
+\end{itemize}
+\begin{python}
+class Animal:
+    species = 'Unknown'   # class attribute
+    def __init__(self, name):
+        self.name = name  # instance attribute
+
+dog = Animal('Buddy')
+print(dog.species)  # -> 'Unknown'
+dog.species = 'Dog'       # shadows class attribute for this instance
+print(dog.species)  # -> 'Dog'
+\end{python}
+
+\subsection{Inheritance Syntax \texttt{class Child(Parent)}}
+Declaring \verb|class Child(Parent):| puts \verb|Parent| into the new type’s method‑resolution order (MRO).  Attribute look‑up proceeds \textit{instance \(\to\) Child \(\to\) Parent \(\to\dots\)} until found or \verb|AttributeError| is raised.
+
+\section{Shallow vs\ Deep Copy}
+\begin{enumerate}
+  \item \textbf{Shallow copy} (\verb|copy.copy|): duplicates the outer container, reusing references to inner objects.
+  \item \textbf{Deep copy} (\verb|copy.deepcopy|): recursively duplicates the entire object graph.
+\end{enumerate}
+Use deep copies when you must mutate nested content without altering the original; otherwise prefer the cheaper shallow copy.
+
+\bigskip
+\begin{center}\hrulefill\end{center}
+\noindent\textit{Revision checklist for interview prep}
+\begin{itemize}
+  \item Understand reference vs\ value semantics in CPython.
+  \item Be able to predict side‑effects of slicing, copying, and in‑place operations.
+  \item Explain how Python’s data model (dunder methods) enables operator overloading and custom containers.
+  \item Know common pitfalls: mutable default arguments, late binding in closures, iterator exhaustion.
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Practice prompt}: Implement a function that deep‑copies a nested list \emph{without} using \verb|copy.deepcopy|.  Analyse time/space complexity and potential stack‑overflow issues.

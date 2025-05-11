@@ -1,0 +1,157 @@
+% \lesson{2}{11th May 2025}{Python Fundamentals Review}
+% ----------------------------------------------------------
+% Python review notes – stripped of algebraic‑topology material
+% ----------------------------------------------------------
+% Preamble commands such as \usepackage{amsmath}, \usepackage{listings}, etc.
+% are assumed to be in the master template.
+
+\chapter{Leetcode Problems}
+
+\section{Scope of this Appendix}
+The section below covers some of the \textbf{many} LeetCode problems I solved while preparing for interviews, 
+or when I feel like I need to give myself a brainstorm. I will not include any actual code here, but rather 
+the thought process that I had when solving the problems.
+
+
+\subsection*{Problem 1: Two Sum}
+\addcontentsline{toc}{subsection}{Problem 1: Two Sum}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Easy}
+    \item Topics: \texttt{Array}, \texttt{Hash Table}
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    Given an array of integers \texttt{nums} and an integer \texttt{target}, return indices of the two
+    numbers such that they add up to \texttt{target}. You may assume that each input would have
+    exactly one solution, and you may not use the same element twice. You can return the
+    answer in any order.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item Initialise a \texttt{hashmap} (or \texttt{dictionary} in Python), store the element of 
+    \texttt{nums} as key and index as value if its difference with the target is not already in.
+    \item If the difference is in the hashmap, extract the indices.
+\end{itemize}
+
+\subsection*{Problem 21: Merge Two Sorted Lists}
+\addcontentsline{toc}{subsection}{Problem 21: Merge Two Sorted Lists}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Easy}
+    \item Topics: \texttt{Linked List}, \texttt{Recursion}
+\end{itemize}
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    Merge two sorted linked lists and return it as a new sorted list. The new list should be made by 
+    splicing together the nodes of the first two lists.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item Initialise a \texttt{dummy} node to store the merged list.
+    \item Initialise a \texttt{curr} pointer to the \texttt{dummy} node.
+    \item Iterate through both lists, comparing the values of the nodes.
+    \item Append the smaller node to the \texttt{curr} pointer and move the 
+    \texttt{head} pointer of the respective list to the next node.
+    \item Move the \texttt{curr} pointer to the next node.
+    \item If one of the lists is not empty, append the remaining nodes to the \texttt{curr} pointer.
+    \item Return the \texttt{next} of the \texttt{dummy} node.
+    \item The time complexity is \(\mathcal{O}(n + m)\) where \(n\) and \(m\) are the lengths of the two lists.
+    \item The space complexity is \(\mathcal{O}(1)\) since we are not using any extra space.
+\end{itemize}
+
+\subsection*{Problem 49: Group Anagrams}
+\addcontentsline{toc}{subsection}{Problem 49: Group Anagrams}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Medium}
+    \item Topics: \texttt{Array}, \texttt{Hash Table}, \texttt{String}, \texttt{Sorting}
+\end{itemize}
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    Given an array of strings \texttt{strs}, group the anagrams together. You can return the answer in
+    any order.
+\end{tcolorbox}
+\begin{itemize}
+    \item The key idea here is to find a way to hash each word in a way such that 
+    only anagrams share the same hash. Using \texttt{ord()} is one way of doing it.
+    \item Intialise a \texttt{dict()} to store the hash as key and the list of words as value.
+    \item Iterate through the list of words. For each word, initialise a \texttt{list} of 26 zeros,
+    then increment the corresponding index by 1 for each character in the word.
+    \item Convert the \texttt{list} to a \texttt{tuple}, and that would be your key 
+    for that particular anagram.
+    \item Append the word to the \texttt{dict()} using the hash as key.
+    \item Return the values of the \texttt{dict()}.
+\end{itemize}
+
+\subsection*{Problem 104: Maximum Depth of Binary Tree}
+\addcontentsline{toc}{subsection}{Problem 104: Maximum Depth of Binary Tree}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Easy}
+    \item Topics: \texttt{Tree}, \texttt{Depth-First Search}, \texttt{Binary Tree}, \texttt{Breadth-First Search}
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    Given the \texttt{root} of a binary tree, return its maximum depth.
+    A binary tree's maximum depth is the number of nodes along the longest path from the root node down
+    to the farthest leaf node.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item The idea is to use a depth-first search (DFS) to traverse the tree.
+    \item If the current node is \texttt{None}, return 0.
+    \item Otherwise, traverse the left and right subtrees with depth + 1.
+    \item Return the maximum of the two depths.
+    \item The time complexity is \(\mathcal{O}(n)\) where \(n\) is the number of nodes in the tree.
+    \item The space complexity is \(\mathcal{O}(h)\) where \(h\) is the height of the tree.
+\end{itemize}
+
+\subsection*{Problem 121: Best Time to Buy and Sell Stock}
+\addcontentsline{toc}{subsection}{Problem 121: Best Time to Buy and Sell Stock}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Easy}
+    \item Topics: \texttt{Array}, \texttt{Dynamic Programming}
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    You are given an array \texttt{prices} where \texttt{prices[i]} is the price of a given stock on the
+    \(i\)-th day. You want to maximize your profit by choosing a single day to buy one stock and
+    choosing a different day in the future to sell that stock.
+    Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit,
+    return 0.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item The idea is to keep track of the minimum price seen so far and the maximum profit.
+    \item Iterate through the list of prices, updating the minimum price and maximum profit.
+    \item Return the maximum profit.
+    \item The time complexity is \(\mathcal{O}(n)\) where \(n\) is the number of days.
+    \item The space complexity is \(\mathcal{O}(1)\).
+\end{itemize}
+
+\subsection*{Problem 217: Contains Duplicate}
+\addcontentsline{toc}{subsection}{Problem 217: Contains Duplicate}
+\begin{itemize}
+    \setlength\itemsep{0.1em}  % space between items
+    \setlength\parskip{0pt}    % space between paragraphs inside items
+    \item Difficulty: \texttt{Easy}
+    \item Topics: \texttt{Array}, \texttt{Hash Table}, \texttt{Sorting}
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!80!black, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=6pt]
+    Given an integer array \texttt{nums}, return \texttt{true} if any value appears at least twice in the
+    array, and return \texttt{false} if every element is distinct.
+\end{tcolorbox}
+
+\begin{itemize}
+    \item Initialise a \texttt{hashset}, if the current value is not in, add it 
+    into \texttt{hashset}.
+    \item If the current value is in, return \texttt{True}.
+    \item Return \texttt{False} when the loop ends.
+\end{itemize}
+
